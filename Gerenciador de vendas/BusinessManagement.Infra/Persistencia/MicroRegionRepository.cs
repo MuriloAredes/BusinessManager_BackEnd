@@ -43,9 +43,9 @@ namespace BusinessManagement.Infra.Persistencia
             return false;
         }
 
-        public IEnumerable<MicroRegiao> GetAll()
+        public  IEnumerable<MicroRegiao> GetAll()
         {
-            var result = _dataContext.MicroRegioes.AsEnumerable();
+            var result =  _dataContext.MicroRegioes.AsEnumerable().ToList();
 
            
             return result;

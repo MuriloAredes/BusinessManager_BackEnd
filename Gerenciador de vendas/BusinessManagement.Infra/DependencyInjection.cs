@@ -14,8 +14,8 @@ namespace BusinessManagement.Infra
 
             Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
             Services.AddScoped<IAtendimentoRepository, AtendimentoRepository>();
-            Services.AddScoped<IMicroRegionRepository, MicroRegionRepository>();
-            Services.AddScoped<IRegionRepository, RegionRepository>();
+            Services.AddTransient<IMicroRegionRepository, MicroRegionRepository>();
+            Services.AddTransient<IRegionRepository, RegionRepository>();
 
             return Services;
         }

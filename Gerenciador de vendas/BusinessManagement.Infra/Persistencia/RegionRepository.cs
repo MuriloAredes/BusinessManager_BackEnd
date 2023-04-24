@@ -46,7 +46,7 @@ namespace BusinessManagement.Infra.Persistencia
 
         public IEnumerable<Regiao> GetAll()
         {
-            var result = _dataContext.Regioes.AsEnumerable();
+            var result = _dataContext.Regioes.AsEnumerable().ToList();
             return result;
         }
 
