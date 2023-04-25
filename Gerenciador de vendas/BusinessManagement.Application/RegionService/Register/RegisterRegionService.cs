@@ -27,47 +27,32 @@ namespace BusinessManagement.Application.RegionService.Register
             var microRegionDb = _microRegionRepository.GetAll().ToList();
 
 
-            var microRegionList = resultRegionsInteractor.Select(o =>
-            new MicroRegiao
-            {
-                Nome = o.Nome,
-                Sigla = o.Sigla,
-                Regiao = new Regiao
-                {
-                    Nome = o.Region.Nome,
-                    Sigla = o.Region.Sigla,
-                }
-            }).ToList();
-
             List<Regiao> regionListFilter = new List<Regiao>();
             List<MicroRegiao> microRegionListFilter = new List<MicroRegiao>();
 
-            foreach (var microRegion in microRegionList)
+            foreach (var microRegion in resultRegionsInteractor)
             {
-                
-                if (!regionDb.Any(e => e.Sigla.Equals(microRegion.Regiao.Sigla)))
+                string siglaRegion = microRegion.Region!.Sigla;
+                var hasRegion = regionListFilter.FirstOrDefault(o => o.Sigla.Equals(siglaRegion));
+                var hasRegionContext = regionDb.FirstOrDefault(o => o.Sigla.Equals(siglaRegion));
+
+                if (hasRegion is null  &&  hasRegionContext is null) 
                 {
-                    if (!regionListFilter.Any(o => o.Sigla.Equals(microRegion.Regiao.Sigla)))
-                    {
-                        regionListFilter.Add(new Regiao  { Nome = microRegion.Nome, Sigla = microRegion.Sigla });
-                    }
+                    regionListFilter.Add(new Regiao { Nome = microRegion.Region.Nome, Sigla = microRegion.Region.Sigla});
                 }
 
-                if (!microRegionDb.Any(o => o.Sigla.Equals(microRegion.Sigla)))
+                var siglaMicroRegion = microRegion.Sigla!;
+                var hasMicroReg = microRegionListFilter.FirstOrDefault(o => o.Sigla.Equals(siglaMicroRegion));
+                var hasMicroRegionContext = microRegionDb.FirstOrDefault(o => o.Sigla.Equals(siglaMicroRegion));
+
+                if(hasMicroReg is null && hasMicroRegionContext is null)
                 {
-                    if (!microRegionListFilter.Any(o => o.Nome.Equals(microRegion.Nome)))
-                    {
-                        microRegionListFilter.Add(new MicroRegiao { Nome = microRegion.Regiao.Nome, Sigla = microRegion.Regiao.Sigla });
-                    }
+                    microRegionListFilter.Add(new MicroRegiao { Nome = microRegion.Nome, Sigla = microRegion.Sigla });
                 }
 
             }
 
-            var microRegionCleanList = microRegionListFilter.Distinct().ToList();
-            var regionCleanList = regionListFilter.Distinct().ToList();
-
-
-            foreach (var item in microRegionCleanList)
+            foreach (var item in regionListFilter)
             {
                 var region = await _regionRepository.Adicionar(new Regiao
                 {
@@ -75,7 +60,7 @@ namespace BusinessManagement.Application.RegionService.Register
                     Sigla = item.Sigla
                 });
 
-                foreach (var itemMicro in regionCleanList)
+                foreach (var itemMicro in microRegionListFilter)
                 {
                     await _microRegionRepository.Adicionar(new MicroRegiao
                     {
