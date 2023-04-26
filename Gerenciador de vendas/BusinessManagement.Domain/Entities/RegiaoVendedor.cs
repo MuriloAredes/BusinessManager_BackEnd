@@ -9,9 +9,8 @@ namespace BusinessManagement.Domain.Entities
         public Guid VendedorId { get; set; }
         public int RegionId { get; set; }
         public bool Status { get; set; }
-
         public virtual ICollection<Vendedor> ? Vendedores { get; set; }
-        public virtual ICollection<Regiao>? Regioes { get; set; }
+        public virtual Regiao ? Regioes { get; set; }
 
         public RegiaoVendedor()
         {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BusinessManagement.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class initials : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,36 +28,56 @@ namespace BusinessManagement.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RegiaoVendedores",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    VendedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RegionId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegiaoVendedores", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Regioes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Sigla = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RegiaoVendedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Regioes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MicroRegioes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegiaoId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MicroRegioes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Regioes_RegiaoVendedores_RegiaoVendedorId",
-                        column: x => x.RegiaoVendedorId,
-                        principalTable: "RegiaoVendedores",
+                        name: "FK_MicroRegioes_Regioes_RegiaoId",
+                        column: x => x.RegiaoId,
+                        principalTable: "Regioes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegiaoVendedores",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VendedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegionId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    RegioesId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegiaoVendedores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RegiaoVendedores_Regioes_RegioesId",
+                        column: x => x.RegioesId,
+                        principalTable: "Regioes",
                         principalColumn: "Id");
                 });
 
@@ -82,26 +102,6 @@ namespace BusinessManagement.Infra.Migrations
                         name: "FK_Vendedores_RegiaoVendedores_RegiaoVendedorId",
                         column: x => x.RegiaoVendedorId,
                         principalTable: "RegiaoVendedores",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MicroRegioes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RegiaoId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MicroRegioes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MicroRegioes_Regioes_RegiaoId",
-                        column: x => x.RegiaoId,
-                        principalTable: "Regioes",
                         principalColumn: "Id");
                 });
 
@@ -151,9 +151,9 @@ namespace BusinessManagement.Infra.Migrations
                 column: "RegiaoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Regioes_RegiaoVendedorId",
-                table: "Regioes",
-                column: "RegiaoVendedorId");
+                name: "IX_RegiaoVendedores_RegioesId",
+                table: "RegiaoVendedores",
+                column: "RegioesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendedores_RegiaoVendedorId",
@@ -177,10 +177,10 @@ namespace BusinessManagement.Infra.Migrations
                 name: "Vendedores");
 
             migrationBuilder.DropTable(
-                name: "Regioes");
+                name: "RegiaoVendedores");
 
             migrationBuilder.DropTable(
-                name: "RegiaoVendedores");
+                name: "Regioes");
         }
     }
 }

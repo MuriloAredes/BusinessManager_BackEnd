@@ -128,16 +128,11 @@ namespace BusinessManagement.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RegiaoVendedorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Sigla")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RegiaoVendedorId");
 
                     b.ToTable("Regioes");
                 });
@@ -147,6 +142,9 @@ namespace BusinessManagement.Infra.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("RegioesId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RegionId")
                         .HasColumnType("int");
@@ -158,6 +156,8 @@ namespace BusinessManagement.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RegioesId");
 
                     b.ToTable("RegiaoVendedores");
                 });
@@ -234,11 +234,13 @@ namespace BusinessManagement.Infra.Migrations
                     b.Navigation("Regiao");
                 });
 
-            modelBuilder.Entity("BusinessManagement.Domain.Entities.Regiao", b =>
+            modelBuilder.Entity("BusinessManagement.Domain.Entities.RegiaoVendedor", b =>
                 {
-                    b.HasOne("BusinessManagement.Domain.Entities.RegiaoVendedor", null)
-                        .WithMany("Regioes")
-                        .HasForeignKey("RegiaoVendedorId");
+                    b.HasOne("BusinessManagement.Domain.Entities.Regiao", "Regioes")
+                        .WithMany()
+                        .HasForeignKey("RegioesId");
+
+                    b.Navigation("Regioes");
                 });
 
             modelBuilder.Entity("BusinessManagement.Domain.Entities.Vendedor", b =>
@@ -262,8 +264,6 @@ namespace BusinessManagement.Infra.Migrations
 
             modelBuilder.Entity("BusinessManagement.Domain.Entities.RegiaoVendedor", b =>
                 {
-                    b.Navigation("Regioes");
-
                     b.Navigation("Vendedores");
                 });
 
