@@ -13,8 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Dependency 
-
+//Dependency
 builder.Services.
     AddApplications()
     .AddInfrastructure();

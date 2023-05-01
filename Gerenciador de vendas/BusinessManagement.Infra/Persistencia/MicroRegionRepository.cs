@@ -1,6 +1,7 @@
 ﻿using BusinessManagement.Domain.Entities;
 using BusinessManagement.Infra.Data;
 using BusinessManagement.Infra.Persistencia.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessManagement.Infra.Persistencia
 {
@@ -51,9 +52,9 @@ namespace BusinessManagement.Infra.Persistencia
             return result;
         }
 
-        public async Task<MicroRegiao> ObterPorId(Guid Id)
+        public async Task<MicroRegiao> ObterPorEstado(string estado)
         {
-            MicroRegiao? result = await _dataContext.MicroRegioes.FindAsync(Id.ToString());
+            MicroRegiao? result = await _dataContext.MicroRegioes.FirstOrDefaultAsync(o => o.Sigla.Equals(estado));
             return result ?? new MicroRegiao();
         }
     }

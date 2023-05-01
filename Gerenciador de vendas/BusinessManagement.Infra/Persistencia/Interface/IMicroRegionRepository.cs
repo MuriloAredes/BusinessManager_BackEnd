@@ -7,7 +7,7 @@ namespace BusinessManagement.Infra.Persistencia.Interface
         Task Adicionar(MicroRegiao microRegiao);
         Task<bool> Atualizar(MicroRegiao microRegiao);
         Task<bool> Excluir(Guid Id);
-        Task<MicroRegiao> ObterPorId(Guid Id);
+        Task<MicroRegiao> ObterPorEstado(string Id);
         IEnumerable<MicroRegiao> GetAll();
     }
 }

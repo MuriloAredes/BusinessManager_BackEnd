@@ -17,7 +17,9 @@ namespace BusinessManagement.Infra.Persistencia
             await _dataContext.Regioes.AddAsync(regiao);
             await _dataContext.SaveChangesAsync();
 
-            return _dataContext.Regioes.FirstOrDefault(o => o.Sigla.Equals(regiao.Sigla));
+            Regiao? region = _dataContext.Regioes.FirstOrDefault(o => o.Sigla.Equals(regiao.Sigla));
+
+            return region ?? new Regiao();
 
         }
 

@@ -1,6 +1,7 @@
 ﻿using BusinessManagement.Application.Interactor;
 using BusinessManagement.Application.Interactor.interfaces;
 using BusinessManagement.Application.RegionService.Register;
+using BusinessManagement.Application.SellerService.Create;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessManagement.Application
@@ -13,6 +14,7 @@ namespace BusinessManagement.Application
             Services.AddTransient<IRegionIbgeInteractor, RegionIbgeInteractor>();
             Services.AddTransient<ISearchByZipCode, SearchByZipCode>();
             Services.AddScoped<IRegisterRegionService, RegisterRegionService>();
+            Services.AddTransient<ICreateSellerService, CreateSellerService>();
 
             return Services;
         }
